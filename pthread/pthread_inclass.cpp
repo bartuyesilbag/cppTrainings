@@ -9,30 +9,37 @@ struct data{
 class worker{
 pthread_t myThread;
 
-void* doSomething(void* arg){
-
+static void* doSomething(void* arg){
+  data * tempData = (data*)arg;
+  long toplam = tempData->a + tempData->b;
+  pthread_exit((void*)toplam);
 }
 
 public:
   bool start(){
-    worker *data = new data();
-    data->a = 5;
-    data->b = 6;
+    data *newData = new data();
+    newData->a = 5;
+    newData->b = 6;
 
-    if(!pthread_create(&myThread,NULL,doSomething,(void*)data)){
-      delete data;
+    if(pthread_create(&myThread,NULL,doSomething,(void*)newData)) {
+      delete newData;
       return false;
     }
     return true;
   }
 
   void wait(){
-    pthread_join(myThread,NULL);
+    void* p_toplam;
+    pthread_join(myThread,&p_toplam);
+    mToplam = (long)p_toplam;
   }
-
-}
+  long mToplam;
+};
 
 int main(int argc, char const *argv[]) {
-
+  worker w;
+  w.start();
+  w.wait();
+  printf("Toplam : %lu \n",w.mToplam);
   return 0;
 }
