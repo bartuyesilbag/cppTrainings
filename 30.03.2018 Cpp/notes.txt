@@ -1,0 +1,6 @@
+g++ -S main.cpp -o source.s (Cpp kodunu Assembly haline getirmek için)
+g++ -o project_helloWorld main.cpp (Derlemek için)
+
+./project_helloWorld > /dev/null (printleri null'a yönlendirir. printleri basmaz sadece cerr(error) ları basar)
+./project_helloWorld > /dev/null 2&>1 (2'yi 1'e yönlendirir. errorları da basmaz.)    (Input : 1 Output : 2 Error : 3)
+
